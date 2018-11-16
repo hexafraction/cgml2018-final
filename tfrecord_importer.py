@@ -12,6 +12,7 @@
 import os
 import sys
 import glob
+import zlib
 import numpy as np
 import stempeg
 import tensorflow as tf
@@ -19,8 +20,11 @@ import gc
 from tqdm import tqdm
 
 rootpath = os.getcwd()
+destpath = os.getcwd()
 if len(sys.argv) >= 2:
     rootpath = sys.argv[1]
+if len(sys.argv) >= 3:
+    destpath = sys.argv[2]
 
 trainglob = os.path.join(rootpath, 'train', '*.stem.mp4')
 testglob = os.path.join(rootpath, 'test', '*.stem.mp4')
@@ -40,7 +44,12 @@ def serialize_int64(value):
 
 
 # Reads a STEMS file, splits it into 16384-sample fragments, and stores these fragments into a TFrecord file.
-def process_file(filename, writer):
+def process_file(filename, record_path, filenum):
+    options = tf.python_io.TFRecordOptions(tf.python_io.TFRecordCompressionType.ZLIB,
+                                           compression_strategy=zlib.Z_HUFFMAN_ONLY,
+                                           mem_level=9,
+                                           compression_level=3)
+    writer = tf.python_io.TFRecordWriter(os.path.join(record_path, str(filenum) + '.tfrecord'), options)
     # print(filename)
     gc.collect()
     S, rate = stempeg.read_stems(filename, np.float32)
@@ -53,6 +62,7 @@ def process_file(filename, writer):
             # Work around https://github.com/faroit/stempeg/issues/8
             example = write_segment(S[:, i:i + FRAGMENT_LENGTH].astype(np.float32), rate)
             writer.write(example.SerializeToString())
+    writer.close()
 
 
 # @profile
@@ -71,15 +81,23 @@ def write_segment(S, rate):
 
 
 def process_file_list(file_list, record_path):
-    i = 10000
-    for filename in tqdm(file_list):
-        writer = tf.python_io.TFRecordWriter(os.path.join(record_path, str(i) + '.tfrecord'))
-        process_file(filename, writer)
-        writer.close()
-        i = i + 1
+    for (i, filename) in tqdm(list(enumerate(file_list))):
+        process_file(filename, record_path, i+10000)
 
 
 print("Processing train data...")
-process_file_list(train_files, 'train')
+traindest = os.path.join(destpath, 'train')
+
+try:
+    os.mkdir(traindest)
+except FileExistsError:
+    pass
+process_file_list(train_files, traindest)
+
 print("Processing test data...")
-process_file_list(test_files, 'test')
+testdest = os.path.join(destpath, 'test')
+try:
+    os.mkdir(testdest)
+except FileExistsError:
+    pass
+process_file_list(test_files, testdest)
