@@ -29,7 +29,6 @@ tfrecord_features = tf.parse_single_example(rslt,
                                                 'accomp': tf.FixedLenFeature([], tf.string),
                                                 'vocals': tf.FixedLenFeature([], tf.string),
                                             }, name='features')
-tf.parse_
 shape = tf.decode_raw(tfrecord_features['shape'], tf.int32)
 # print(shape)
 mix = tf.decode_raw(tfrecord_features['mix'], tf.float32)
