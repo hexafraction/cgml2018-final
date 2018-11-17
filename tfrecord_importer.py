@@ -8,7 +8,7 @@
 # (https://github.com/chiphuyen/stanford-tensorflow-tutorials/blob/master/2017/examples/09_tfrecord_example.py),
 # (c) 2017 Huyen Nguyen under MIT License
 
-# from memory_profiler import profile
+# from memory_profiler import memory_profiler
 import os
 import sys
 import glob
@@ -26,6 +26,7 @@ if len(sys.argv) >= 2:
 if len(sys.argv) >= 3:
     destpath = sys.argv[2]
 
+#finds all files with the given extentions and puts them in a format for glob
 trainglob = os.path.join(rootpath, 'train', '*.stem.mp4')
 testglob = os.path.join(rootpath, 'test', '*.stem.mp4')
 

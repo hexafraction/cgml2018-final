@@ -1,3 +1,9 @@
+#!/bin/python3.5.2
+#Ostap Voynarovskiy and Andrey Akhmetov
+#CGML Final
+#Nov 16 2018
+#Professor Curro
+
 import os
 import sys
 import glob
@@ -7,9 +13,12 @@ import tensorflow as tf
 import gc
 from tqdm import tqdm
 
+# Given to us in Wave-U-Net
 BATCH_SIZE = 10
 
-os.environ['CUDA_VISIBLE_DEVICES'] = "-1"
+# Tell it what gpu to use
+os.environ['CUDA_VISIBLE_DEVICES'] = "0" 
+
 sess = tf.Session()
 
 dataset = tf.data.TFRecordDataset(['train/10000.tfrecord'], "ZLIB")
@@ -30,7 +39,8 @@ tfrecord_features = tf.parse_single_example(rslt,
                                                 'vocals': tf.FixedLenFeature([], tf.string),
                                             }, name='features')
 shape = tf.decode_raw(tfrecord_features['shape'], tf.int32)
-# print(shape)
+
+print(shape)
 mix = tf.decode_raw(tfrecord_features['mix'], tf.float32)
 mix = tf.reshape(mix, shape)
 
@@ -45,3 +55,5 @@ accomp = tf.reshape(accomp, shape)
 
 vocals = tf.decode_raw(tfrecord_features['vocals'], tf.float32)
 vocals = tf.reshape(vocals, shape)
+
+
