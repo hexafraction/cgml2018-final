@@ -15,10 +15,9 @@ import numpy as np
 import stempeg
 import tensorflow as tf
 import gc
-from tqdm import tqdm
 import matplotlib.pyplot as plt
 import logging
-
+from tqdm import tqdm
 
 #os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
@@ -29,21 +28,6 @@ x_train,x_test = x_train/255.0 ,x_test/255.0		# go from 0-1 instead of 0-255 8 b
 y_train = y_train.astype('int32')					# fix due to tensorflow complaining
 y_test = y_test.astype('int32') 					# fix due to tensorflow complaining
 
-#import pdb; pdb.set_trace() # debug mode
-'''def cutData(f, cut):
-	l,w,h = f.shape
-	s,e = cut,w-cut #assumes square
-	fo = f[:,s:e,s:e]
-	print (fo.shape)
-	return fo
-'''
-def cutData(f, cutx,cuty):
-	l,w,h = f.shape
-	sx,ex = cutx,w-cutx #assumes square
-	sy,ey = cuty,w-cuty #assumes square
-	fo = f[:,sy:ey,sx:ex]
-	print (fo.shape)
-	return fo
 
 
 def genTrainAndVal(f,l): #split the features and labels of the training data 80:20 train and validation
@@ -78,6 +62,7 @@ def Model(features,labels,mode):
 	l = 0.002
 	fil = 1 
 	dr  = .1
+
 	# conv layer 1
 	conv1 = tf.layers.conv2d(inputs=L0,filters=fil,kernel_size=[k, k], padding="same", activation=tf.nn.elu)
 	# pool layer 1
@@ -120,11 +105,11 @@ def main():
 	mnist_classifier = tf.estimator.Estimator(model_fn=Model)#,model_dir="./tmp/modelCheckpoint"
 	#tensors_to_log = {"probabilities": "softmax_tensor"}
 	#logging_hook = tf.train.LoggingTensorHook(tensors=tensors_to_log, every_n_iter=50)
-	tf.logging.set_verbosity(tf.logging.INFO)
+	#tf.logging.set_verbosity(tf.logging.INFO)
 
 	train_input_fn = tf.estimator.inputs.numpy_input_fn(x={"x": tx},y=ty,batch_size=100,
 		num_epochs=None,shuffle=True)
-
+	
 	mnist_classifier.train(input_fn=train_input_fn,steps=2000)#,hooks=[logging_hook])
 
 	eval_input_fn = tf.estimator.inputs.numpy_input_fn(x={"x": vx},y=vy,
@@ -141,20 +126,14 @@ def main():
 	print(eval_results)
 
 
-	
-
-cutx = 4
-cuty = 4
 tx,ty,vx,vy = genTrainAndVal(x_train,y_train)
-tx=cutData(tx,cutx,cuty)
-vx=cutData(vx,cutx,cuty)
-x_test = cutData(x_test,cutx,cuty)
-print(tx.shape,'hi')
+
+print("train x shape",tx.shape)
 main()
 
-#end of code
 
-# just for shits 
+#end of code
+# This part is just for shits 
 def plotVal():
 	len,_,_ = x_train.shape
 

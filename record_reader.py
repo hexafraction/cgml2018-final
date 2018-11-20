@@ -21,6 +21,67 @@ BATCH_SIZE = 10
 # Tell it what gpu to use
 os.environ['CUDA_VISIBLE_DEVICES'] = "0" 
 
+################ Adding My Stuff Below This ################
+
+def WaveUNet(features):
+	def UpSample(dataIn):
+		dataIn = tf.expand_dims(dataIn, axis=1) 
+		upsampled = tf.image.resize_bilinear(dataIn, [1, dataIn.get_shape().as_list()[2]*2]) 
+		#upsampled = dataIn + dataIn - 1
+		return upsampled
+
+	inputShape =  [batch, in_width, in_channels] 
+	downconvFilters = 15
+	upconvFilters = 5
+	convStride = 1 
+	convPadding = 'VALID'
+	LAYERS = 15
+	down = []
+	up = []
+	current_layer = features
+
+	for i in range(LAYERS):
+		#the going down part
+		current_layer = tf.nn.conv1d(features,downconvFilters+(downconvFilters*i),convStride,convPadding)
+		down.append(current_layer)
+		current_layer = current_layer[:,::2,:] 
+
+	# middle part	
+	current_layer = tf.nn.conv1d(features,downconvFilters+(downconvFilters*i),convStride,convPadding)
+
+	for j in range(LAYERS):
+		#the going up part
+		current_layer= UpSample(down[i-j])
+		current_layer = tf.nn.conv1d(features,downconvFilters+(downconvFilters*i),convStride,convPadding)
+
+
+''' start
+
+features  = tf.placeholder(tf.float32, [None,1]) 	# Should get batch size by 2 array of labels
+labels = tf.placeholder(tf.float32, [None]) 		# Should get batch size by 1 array ...
+
+labels_predicted = WaveUNet(features) #this needs to be moved lower
+
+loss = tf.losses.sigmoid_cross_entropy(tf.stack([labels, 1-labels], 1),tf.squeeze(tf.stack([labels_predicted, -labels_predicted], 1))) \
+	   + l*tf.reduce_sum([tf.nn.l2_loss(tV) for tV in tf.trainable_variables()])
+#loss  = tf.reduce_mean(tf.pow(y-y_hat, 2)/2) #loss funtion = cross entropy + L2 norm
+
+lr = .1
+optim = tf.train.GradientDescentOptimizer(learning_rate=.1).minimize(loss) #this does gradient descent
+
+init  = tf.global_variables_initializer()
+
+
+#worry about this later
+sess.run(init)
+data = Data()
+for _ in tqdm(range(0, NUM_ITER)):
+    x_np, labels_np = data.get_batch()
+    loss_np, yhats, _ = sess.run([loss, labels_predicted, optim], feed_dict={features: x_np, labels: labels_np})
+print(loss_np)
+#this crap is training?
+	stop
+''' 
 
 ################ Model is going above this ################
 sess = tf.Session()
@@ -51,7 +112,7 @@ drums = tf.decode_raw(tfrecord_features['drums'], tf.float32)
 drums = tf.reshape(drums, shape)
 
 bass = tf.decode_raw(tfrecord_features['bass'], tf.float32)
-bass = tf.reshape(bass, shape)
+bass = tf.reshape(bass, shape) 
 
 accomp = tf.decode_raw(tfrecord_features['accomp'], tf.float32)
 accomp = tf.reshape(accomp, shape)
@@ -61,65 +122,12 @@ vocals = tf.reshape(vocals, shape)
 
 
 print(sess.run(mix))
+
+
 ##########################################################################################
 
-def WaveUNet(features,labels,mode):
 
-	inputShape =  [batch, in_width, in_channels] 
-	downconvFilters = 15
-	upconvFilters = 5
-	convStride = 1 
-	padding = 'VALID'
-
-	layer1 = tf.nn.conv1d(features,filters,stride,padding)
-	d1 = 
-	
-	layer2 = tf.nn.conv1d(Input,filters,stride,padding)
-	d2 = 
-	
-	layer3 = tf.nn.conv1d(Input,filters,stride,padding)
-	d3 = 
-
-	layer4 = tf.nn.conv1d(Input,filters,stride,padding)
-	d4 = 
-	
-	layer5 = tf.nn.conv1d(Input,filters,stride,padding)
-	d5 = 
-	
-	layer6 = tf.nn.conv1d(Input,filters,stride,padding)
-	d6 = 
-	
-	layer7 = tf.nn.conv1d(Input,filters,stride,padding)
-	d7 = 
-
-	layer8 = tf.nn.conv1d(Input,filters,stride,padding)
-	d8 = 
-
-	layer9 = tf.nn.conv1d(Input,filters,stride,padding)
-	d9 = 
-	
-	layer10 = tf.nn.conv1d(Input,filters,stride,padding)
-	d10 = 
-
-	layer11 = tf.nn.conv1d(Input,filters,stride,padding)
-	d11 = 
-	
-	layer12 = tf.nn.conv1d(Input,filters,stride,padding)
-	d12 = 
-	
-	layer13 = tf.nn.conv1d(Input,filters,stride,padding)
-	d13 = 
-	
-	layer14 = tf.nn.conv1d(Input,filters,stride,padding)
-	d14 = 
-
-	layer15 = tf.nn.conv1d(Input,filters,stride,padding)
-	d15 = 
-
-	
-
-
-
+''' start
 #!/bin/python3.6
 #Ostap Voynarovskiy
 #CGML HW2
@@ -211,7 +219,8 @@ lr = .1
 optim = tf.train.GradientDescentOptimizer(learning_rate=.1).minimize(loss) #this does gradient descent
 
 init  = tf.global_variables_initializer()
-################ Model is going above this ################
+
+
 sess = tf.Session()
 #sess = tfdbg.LocalCLIDebugWrapperSession(sess)
 sess.run(init)
@@ -222,6 +231,9 @@ for _ in tqdm(range(0, NUM_ITER)):
     loss_np, yhats, _ = sess.run([loss, labels_predicted, optim], feed_dict={features: x_np, labels: labels_np})
 
 print(loss_np)
+
+### THIS IS THE PLOTTING ###
+
 #rslt=sess.run(tf.stack(labels_predicted), feed_dict={features: list(zip(data.featx,data.featy))})
 fig1= plt.figure(1)
 
@@ -247,3 +259,5 @@ plt.axis('equal') #make it so that it isnt warped
 plt.show()
 
 
+	stop
+'''	
