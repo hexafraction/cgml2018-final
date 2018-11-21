@@ -24,6 +24,8 @@ os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 ################ Adding My Stuff Below This ################
 
 def WaveUNet(features):
+
+	'''
 	def UpSample(dataIn):
 		dataIn = tf.expand_dims(dataIn, axis=1) 
 		upsampled = tf.image.resize_bilinear(dataIn, [1, dataIn.get_shape().as_list()[2]*2]) 
@@ -39,13 +41,13 @@ def WaveUNet(features):
 	down = []
 	up = []
 	current_layer = features
-
+	
 	for i in range(LAYERS):
 		#the going down part
 		current_layer = tf.nn.conv1d(features,downconvFilters+(downconvFilters*i),convStride,convPadding)
 		down.append(current_layer)
 		current_layer = current_layer[:,::2,:] 
-
+			
 	# middle part	
 	current_layer = tf.nn.conv1d(features,downconvFilters+(downconvFilters*i),convStride,convPadding)
 
@@ -53,9 +55,10 @@ def WaveUNet(features):
 		#the going up part
 		current_layer= UpSample(down[i-j])
 		current_layer = tf.nn.conv1d(features,downconvFilters+(downconvFilters*i),convStride,convPadding)
+	'''
 
 
-
+'''
 features  = tf.placeholder(tf.float32, [None,1]) 	# Should get batch size by 2 array of labels
 labels = tf.placeholder(tf.float32, [None]) 		# Should get batch size by 1 array ...
 
@@ -77,7 +80,7 @@ for _ in tqdm(range(0, NUM_ITER)):
     x_np, labels_np = data.get_batch()
     loss_np, yhats, _ = sess.run([loss, labels_predicted, optim], feed_dict={features: x_np, labels: labels_np})
 print(loss_np)
-
+'''
 
 ################ Model is going above this ################
 sess = tf.Session()
@@ -115,8 +118,8 @@ accomp = tf.reshape(accomp, shape)
 
 vocals = tf.decode_raw(tfrecord_features['vocals'], tf.float32)
 vocals = tf.reshape(vocals, shape)
-
-
+print(sess.run(mix))
+sess.run(mix)
 print(mix)
 
 
@@ -124,54 +127,8 @@ print(mix)
 
 
 ''' start
-#!/bin/python3.6
-#Ostap Voynarovskiy
-#CGML HW2
-#Sept 19 2018
-#Professor Curro
-
-#from tensorflow.python import debug as tfdbg
-
 BATCH_SIZE = 200
 NUM_ITER = 4000 	# iterations of training 
-
-class Data(object):
-	def __init__(self):
-		#create spirals
-		nPoints = 200 
-		self.index = np.arange(nPoints)
-		self.nPoints = nPoints
-		self.featx, self.featy, self.lab  = self.gen_spiral(nPoints)
-
-	def gen_spiral(self,nPoints):
-		scale = 1
-		offset = 1
-		sigma = .2
-
-		t = np.linspace(0,3.5*np.pi,num = nPoints)
-		noise0 = sigma*np.random.normal(size=nPoints)
-		noise1 = sigma*np.random.normal(size=nPoints)
-		noise2 = sigma*np.random.normal(size=nPoints)
-		noise3 = sigma*np.random.normal(size=nPoints)
-		
-		#add normal noise
-		theta0 = -t*scale + noise0
-		r0 = (t + offset) + noise1
-		theta1= -t*scale + np.pi + noise2	#the addition of pi does a 180 degree shift
-		r1 = (t + offset) + noise3
-
-		#convert from polar to cartesian
-		self.x0 = np.cos(theta0)*(r0)
-		self.y0 = np.sin(theta0)*(r0)
-		cat0 = [0]*nPoints 			# the categories
-		self.x1 = np.cos(theta1)*(r1) 
-		self.y1 = np.sin(theta1)*(r1)
-		cat1 = [1]*nPoints 			# the categories
-		return np.concatenate((self.x0,self.x1)),np.concatenate((self.y0,self.y1)), np.concatenate((cat0,cat1)) 		
-
-	def get_batch(self):
-		choices = np.random.choice(self.nPoints*2, size=BATCH_SIZE)
-		return list(zip(self.featx[choices],self.featy[choices])), self.lab[choices]
 
 
 def f(x): #this is where we decide our tunable parameters and create our perceptron 
@@ -259,6 +216,9 @@ plt.show()
 '''
 
 
+
+'''
+
 #########DELETE BELOW THIS###########
 
 import numpy as np
@@ -335,13 +295,7 @@ def f(x): #this is where we decide our tunable parameters and create our percept
 	layer3 = (tf.matmul(layer2,w3)+b3)				# produce logits for cross entropy loss
 													# to give a clear "is this group 0 or 1" 
 													# so dont put it through a sigmoid now
-	'''The decision to use a leaky relu and an elu was carefully considered. When I first 
-	selected an activation function, I was not picky and used only sigmoids since they are classic. 
-	When I got everything working, I realized that it took many iteratios to converge. I proceeded
-	to test then the hyperbolic tangent, the relu, elu, and leak relu along with different combinations
-	of them. I found that the best results with the least training iterations happened with the
-	leaky relu and the elu function.'''
-
+	
 	# This will be left out. We are performing binary classification.
 	# We will not be modeling something in multiple dim.
 	# mu is the x loc of the gaussian so we use a uniform distribution
@@ -404,3 +358,5 @@ print(np.sum([np.prod(v.get_shape().as_list()) for v in tf.trainable_variables()
 plt.title("3 Layer Perceptron ")
 plt.axis('equal') #make it so that it isnt warped
 plt.show()
+
+'''
