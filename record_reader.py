@@ -32,31 +32,35 @@ def saveWeights(weights):
 
 def WaveUNet(features):
     # Im making the model do nothing for now so we can debug the workflow
-    
-    return features
- 
 
     # Handle upsampling linearly as defined in model M4
     def UpSample(dataIn):
+        print(dataIn.shape)
         dataIn = tf.expand_dims(dataIn, axis=1) 
         upsampled = tf.image.resize_bilinear(dataIn, [1, dataIn.get_shape().as_list()[2]*2]) 
-        #upsampled = dataIn + dataIn - 1
         return upsampled
 
     #Might be useful for shape things ie "input shape" in the first layer
     #inputShape =  [None, 16384, 2]#[batch, in_width, in_channels] 
     
     # PARAMETERS OF THE MODEL
-    downconvFilters = 15
-    upconvFilters = 5
-    convStride = 1
-    convPadding = 'VALID'
-    LAYERS = 15
+    downconvFilters = 5 #15
+    upconvFilters = 5   
+    convStride = 1      
+    convPadding = 'VALID'   # probably means none
+    LAYERS = 12             
     down = []
-    up = []
     current_layer = features
+    #garbage temp model to get everything running
 
-    
+    l1 = tf.nn.conv1d(features,downconvFilters, convStride, convPadding)
+    l1d = l1[:,::2,:] 
+    print(l1d.size())
+    l1U =UpSample(l1d)
+    print(l1U.size())
+    predictions = l1U
+    # This is where we build the real model
+    '''
     for i in range(LAYERS):
         #the going down part
         current_layer = tf.nn.conv1d(features,downconvFilters+(downconvFilters*i),convStride,convPadding)
@@ -70,7 +74,9 @@ def WaveUNet(features):
         #the going up part
         current_layer= UpSample(down[i-j])
         current_layer = tf.nn.conv1d(features,upconvFilters+(upconvFilters*i),convStride,convPadding)
-    
+    '''
+
+    return predictions
 
 
 
@@ -93,7 +99,8 @@ init  = tf.global_variables_initializer()
 sess = tf.Session()
 
 sess.run(init)
-######################################################################## data = Data()#depreciated we use tf recorcds now
+
+# Andrey's stuff
 dataset = tf.data.TFRecordDataset(['train/10000.tfrecord'], "ZLIB")
 dataset = dataset.batch(BATCH_SIZE, True)
 iterator = dataset.make_initializable_iterator()
@@ -127,15 +134,12 @@ accomp = tf.reshape(accomp, shape)
 
 vocals = tf.decode_raw(tfrecord_features['vocals'], tf.float32)
 vocals = tf.reshape(vocals, shape)
-
-
-
-#############################################################################
-
+# End Andrey's stuff
 
 for _ in tqdm(range(0, NUM_ITER)):
     #x_np, labels_np = data.get_batch() # no more data.getBatch we use the tf records now
     loss_np, yhats, _ = sess.run([loss, labels_predicted, optim], feed_dict={features: 'mix', labels: 'vocals'})
+    #we no longer use feed dict so figure out what goes here
     print(loss_np)
 #figure out how to save weights and save them here
 #print(loss_np)
