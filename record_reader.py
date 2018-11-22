@@ -51,9 +51,10 @@ def WaveUNet(features):
     LAYERS = 12             
     down = []
     current_layer = features
+    kernel_size =5
     #garbage temp model to get everything running
 
-    l1 = tf.nn.conv1d(features,downconvFilters, convStride, convPadding)
+    l1 = tf.layers.conv1d(features,downconvFilters,kernel_size)
     l1d = l1[:,::2,:] 
     print(l1d.size())
     l1U =UpSample(l1d)
@@ -63,17 +64,17 @@ def WaveUNet(features):
     '''
     for i in range(LAYERS):
         #the going down part
-        current_layer = tf.nn.conv1d(features,downconvFilters+(downconvFilters*i),convStride,convPadding)
+        current_layer = tf.layers.conv1d(features,downconvFilters+(downconvFilters*i),convStride,convPadding)
         down.append(current_layer)
         current_layer = current_layer[:,::2,:] 
             
     # middle part   
-    current_layer = tf.nn.conv1d(features,downconvFilters+(downconvFilters*i),convStride,convPadding)
+    current_layer = tf.layers.conv1d(features,downconvFilters+(downconvFilters*i),convStride,convPadding)
 
     for j in range(LAYERS):
         #the going up part
         current_layer= UpSample(down[i-j])
-        current_layer = tf.nn.conv1d(features,upconvFilters+(upconvFilters*i),convStride,convPadding)
+        current_layer = tf.layers.conv1d(features,upconvFilters+(upconvFilters*i),convStride,convPadding)
     '''
 
     return predictions
