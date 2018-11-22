@@ -44,7 +44,7 @@ def WaveUNet(features):
     #inputShape =  [None, 16384, 2]#[batch, in_width, in_channels] 
     
     # PARAMETERS OF THE MODEL
-    downconvFilters = 5 #15
+    downconvFilters = 5 #15 not kernels so idk what to do with this now
     upconvFilters = 5   
     convStride = 1      
     convPadding = 'VALID'   # probably means none
@@ -53,6 +53,7 @@ def WaveUNet(features):
     current_layer = features
     kernel_size =5
     #garbage temp model to get everything running
+    print(features.shape)
 
     l1 = tf.layers.conv1d(features,downconvFilters,kernel_size)
     l1d = l1[:,::2,:] 
