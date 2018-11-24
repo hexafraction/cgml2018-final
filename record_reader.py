@@ -89,6 +89,9 @@ def WaveUNet(features):
 
     return predictions
 
+
+sess = tf.Session()
+
 rootpath = os.getcwd()
 trainglob = os.path.join(rootpath, 'train', '*.tfrecord')
 train_files = glob.glob(trainglob)
@@ -96,6 +99,7 @@ train_files = glob.glob(trainglob)
 dataset = tf.data.TFRecordDataset([train_files], "ZLIB")
 dataset = dataset.batch(BATCH_SIZE, True)
 iterator = dataset.make_initializable_iterator()
+
 sess.run(iterator.initializer)
 rslt = iterator.get_next()
 
@@ -148,7 +152,6 @@ optim = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9,beta2=0.999,epsilon
 #lets hope this works first. The paper gives slightly different parameters which we will update to later
 
 init  = tf.global_variables_initializer()
-sess = tf.Session()
 
 sess.run(init)
 
