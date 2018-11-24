@@ -41,25 +41,29 @@ def WaveUNet(features):
         return upsampled
     
     # PARAMETERS OF THE MODEL
-    downconvFilters = 15 #15 not kernels so idk what to do with this now
-    upconvFilters = 5
+    downconvFilters = 24 # 15 not kernels so idk what to do with this now
+    upconvFilters = 15 #?
     convStride = 1
-    convPadding = 'VALID'   # probably means none
+    convPadding = 'same'   # 'valid' means none (switch to valid at some point
     LAYERS = 12
     down = []
     current_layer = features
-    kernel_size =5
+    kernel_size =15
     #garbage temp model to get everything running
-    print('shape of features ', features.shape)
-    l1 = tf.layers.conv1d(features,downconvFilters,kernel_size)
+    print('shape of features ', features.shape) #features are the input
+    l1 = tf.layers.conv1d(features,downconvFilters,kernel_size,padding = convPadding)
     print("post conv 1d \t", l1.shape)
     #downsample
     l1d = l1[:,::2,:]
     print("l1d \t\t", l1d.shape)
+    
+    #upsampling
     l1U =UpSample(l1d)
     print('presqueeze \t',l1U.shape)
     l1U = tf.squeeze(l1U,1)
     print('postsqueeze\t',l1U.shape)
+
+    # Shaping to output dimention
     fin = tf.layers.conv1d(l1U,2,1)
     print('final layer \t', fin.shape)
     
@@ -107,7 +111,6 @@ sess = tf.Session()
 
 sess.run(init)
 
-# Andrey's stuff
 dataset = tf.data.TFRecordDataset(['train/10000.tfrecord'], "ZLIB")
 dataset = dataset.batch(BATCH_SIZE, True)
 iterator = dataset.make_initializable_iterator()
@@ -129,25 +132,30 @@ shape = [-1, 16384, 2] #[numsongs, numsamples per song, num channels]
 
 mix = tf.decode_raw(tfrecord_features['mix'], tf.float32)
 mix = tf.reshape(mix, shape)
+mix = sess.run(mix) #this initialization using sess fixed the graph problem where it was running out of data or whatever
 
 drums = tf.decode_raw(tfrecord_features['drums'], tf.float32)
 drums = tf.reshape(drums, shape)
+drums = sess.run(drums)
 
 bass = tf.decode_raw(tfrecord_features['bass'], tf.float32)
 bass = tf.reshape(bass, shape) 
+bass = sess.run(bass)
 
 accomp = tf.decode_raw(tfrecord_features['accomp'], tf.float32)
 accomp = tf.reshape(accomp, shape)
+accomp = sess.run(accomp)
 
 vocals = tf.decode_raw(tfrecord_features['vocals'], tf.float32)
 vocals = tf.reshape(vocals, shape)
-# End Andrey's stuff
+vocals = sess.run(vocals)
 
-for _ in tqdm(range(0, NUM_ITER)):
+for k in tqdm(range(0, NUM_ITER)):
     #x_np, labels_np = data.get_batch() # no more data.getBatch we use the tf records now
-    loss_np, yhats, _ = sess.run([loss, labels_predicted, optim], feed_dict={features: 'mix', labels: 'vocals'})
-    #we no longer use feed dict so figure out what goes here
-    print(loss_np)
+    loss_np, yhats, _ = sess.run([loss, labels_predicted, optim], {features:mix,labels:vocals})
+    if k%4000 == 0:
+        print(loss_np)
+print(loss_np)
 #figure out how to save weights and save them here
 #print(loss_np)
 
