@@ -89,27 +89,6 @@ def WaveUNet(features):
 
     return predictions
 
-
-features  = mix #tf.placeholder(tf.float32, [None,16384,2])  # Should get batch size by 2 array of labels
-labels = vocals #tf.placeholder(tf.float32, [None,16384,2])     # Revisit this idk if it's right
-
-labels_predicted = WaveUNet(features) #this needs to be moved lower
-
-loss = tf.losses.mean_squared_error(labels,labels_predicted)
-# old loss from old project. Left as reference you can remove 
-#tf.losses.sigmoid_cross_entropy(tf.stack([labels, 1-labels], 1),tf.squeeze(tf.stack([labels_predicted, -labels_predicted], 1))) \
-#      + l*tf.reduce_sum([tf.nn.l2_loss(tV) for tV in tf.trainable_variables()])
-#loss  = tf.reduce_mean(tf.pow(y-y_hat, 2)/2) #loss funtion = cross entropy + L2 norm
-
-lr = .1
-optim = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9,beta2=0.999,epsilon=1e-08).minimize(loss)
-#lets hope this works first. The paper gives slightly different parameters which we will update to later
-
-init  = tf.global_variables_initializer()
-sess = tf.Session()
-
-sess.run(init)
-
 rootpath = os.getcwd()
 trainglob = os.path.join(rootpath, 'train', '*.tfrecord')
 train_files = glob.glob(trainglob)
@@ -152,6 +131,28 @@ accomp = tf.reshape(accomp, shape)
 vocals = tf.decode_raw(tfrecord_features['vocals'], tf.float32)
 vocals = tf.reshape(vocals, shape)
 #vocals = sess.run(vocals)
+
+features  = mix #tf.placeholder(tf.float32, [None,16384,2])  # Should get batch size by 2 array of labels
+labels = vocals #tf.placeholder(tf.float32, [None,16384,2])     # Revisit this idk if it's right
+
+labels_predicted = WaveUNet(features) #this needs to be moved lower
+
+loss = tf.losses.mean_squared_error(labels,labels_predicted)
+# old loss from old project. Left as reference you can remove 
+#tf.losses.sigmoid_cross_entropy(tf.stack([labels, 1-labels], 1),tf.squeeze(tf.stack([labels_predicted, -labels_predicted], 1))) \
+#      + l*tf.reduce_sum([tf.nn.l2_loss(tV) for tV in tf.trainable_variables()])
+#loss  = tf.reduce_mean(tf.pow(y-y_hat, 2)/2) #loss funtion = cross entropy + L2 norm
+
+lr = .1
+optim = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9,beta2=0.999,epsilon=1e-08).minimize(loss)
+#lets hope this works first. The paper gives slightly different parameters which we will update to later
+
+init  = tf.global_variables_initializer()
+sess = tf.Session()
+
+sess.run(init)
+
+
 
 for k in tqdm(range(0, NUM_ITER)):
     #x_np, labels_np = data.get_batch() # no more data.getBatch we use the tf records now
