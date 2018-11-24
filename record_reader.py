@@ -90,9 +90,8 @@ def WaveUNet(features):
     return predictions
 
 
-
-features  = tf.placeholder(tf.float32, [None,16384,2])  # Should get batch size by 2 array of labels
-labels = tf.placeholder(tf.float32, [None,16384,2])     # Revisit this idk if it's right
+features  = mix #tf.placeholder(tf.float32, [None,16384,2])  # Should get batch size by 2 array of labels
+labels = vocals #tf.placeholder(tf.float32, [None,16384,2])     # Revisit this idk if it's right
 
 labels_predicted = WaveUNet(features) #this needs to be moved lower
 
@@ -111,6 +110,7 @@ sess = tf.Session()
 
 sess.run(init)
 
+rootpath = os.getcwd()
 trainglob = os.path.join(rootpath, 'train', '*.tfrecord')
 train_files = glob.glob(trainglob)
 
@@ -135,23 +135,23 @@ shape = [-1, 16384, 2] #[numsongs, numsamples per song, num channels]
 
 mix = tf.decode_raw(tfrecord_features['mix'], tf.float32)
 mix = tf.reshape(mix, shape)
-mix = sess.run(mix) #this initialization using sess fixed the graph problem where it was running out of data or whatever
+#mix = sess.run(mix) #this initialization using sess fixed the graph problem where it was running out of data or whatever
 
 drums = tf.decode_raw(tfrecord_features['drums'], tf.float32)
 drums = tf.reshape(drums, shape)
-drums = sess.run(drums)
+#drums = sess.run(drums)
 
 bass = tf.decode_raw(tfrecord_features['bass'], tf.float32)
 bass = tf.reshape(bass, shape) 
-bass = sess.run(bass)
+#bass = sess.run(bass)
 
 accomp = tf.decode_raw(tfrecord_features['accomp'], tf.float32)
 accomp = tf.reshape(accomp, shape)
-accomp = sess.run(accomp)
+#accomp = sess.run(accomp)
 
 vocals = tf.decode_raw(tfrecord_features['vocals'], tf.float32)
 vocals = tf.reshape(vocals, shape)
-vocals = sess.run(vocals)
+#vocals = sess.run(vocals)
 
 for k in tqdm(range(0, NUM_ITER)):
     #x_np, labels_np = data.get_batch() # no more data.getBatch we use the tf records now
