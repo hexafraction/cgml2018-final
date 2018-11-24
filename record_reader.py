@@ -111,7 +111,10 @@ sess = tf.Session()
 
 sess.run(init)
 
-dataset = tf.data.TFRecordDataset(['train/10000.tfrecord'], "ZLIB")
+trainglob = os.path.join(rootpath, 'train', '*.tfrecord')
+train_files = glob.glob(trainglob)
+
+dataset = tf.data.TFRecordDataset([train_files], "ZLIB")
 dataset = dataset.batch(BATCH_SIZE, True)
 iterator = dataset.make_initializable_iterator()
 sess.run(iterator.initializer)
@@ -152,7 +155,7 @@ vocals = sess.run(vocals)
 
 for k in tqdm(range(0, NUM_ITER)):
     #x_np, labels_np = data.get_batch() # no more data.getBatch we use the tf records now
-    loss_np, yhats, _ = sess.run([loss, labels_predicted, optim], {features:mix,labels:vocals})
+    loss_np, yhats, _ = sess.run([loss, labels_predicted, optim]) #, {features:mix,labels:vocals}
     if k%4000 == 0:
         print(loss_np)
 print(loss_np)
