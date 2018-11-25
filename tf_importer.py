@@ -32,7 +32,7 @@ testglob = os.path.join(rootpath, 'test', '*.stem.mp4')
 train_files = glob.glob(trainglob)
 test_files = glob.glob(testglob)
 
-FRAGMENT_LENGTH = 16384
+FRAGMENT_LENGTH = 98291 #16384
 
 
 def serialize_bytes(value):
@@ -86,7 +86,7 @@ def process_file_list(file_list, record_path):
 
 
 print("Processing train data...")
-traindest = os.path.join(destpath, 'train')
+traindest = os.path.join(destpath, 'train92k')
 
 try:
     os.mkdir(traindest)
@@ -95,7 +95,7 @@ except FileExistsError:
 process_file_list(train_files, traindest)
 
 print("Processing test data...")
-testdest = os.path.join(destpath, 'test')
+testdest = os.path.join(destpath, 'test92k')
 try:
     os.mkdir(testdest)
 except FileExistsError:

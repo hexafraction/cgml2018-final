@@ -17,8 +17,8 @@ from tqdm import tqdm
 
 # Given to us in Wave-U-Net
 BATCH_SIZE = 10
-NUM_ITER = 4000
-
+NUM_ITER = 1000 #1020 #change to more when we get a more robust record parser
+EPOCHS = 500 #should be like 2000 but really 20 iterations after it stops improoving the loss
 # Tell it what gpu to use
 os.environ['CUDA_VISIBLE_DEVICES'] = "0" 
 
@@ -56,7 +56,7 @@ def WaveUNet(features):
     l1 = features
     for i in range(LAYERS):
         #perform 1d Conv using the parameters defined above
-        l1 = tf.layers.conv1d(l1,convFilters*(i+1),down_kernel_size,padding = convPadding)
+        l1 = tf.layers.conv1d(l1,convFilters*(i+1),down_kernel_size,padding = convPadding,activation = tf.nn.leaky_relu )
         print("post conv 1d \t", l1.shape) # print the shape for sanity sake
         down.append(l1) #append the convolved layer to the skip connection list
         
@@ -71,7 +71,7 @@ def WaveUNet(features):
         l1 = l1[:,:-1,:] #linear upsampling with an odd outputs excludes the last upsampled value  
         
         # 1D Convolution going upwards the U (for reducing filter dimention)
-        l1 = tf.layers.conv1d(l1,convFilters*(i+1),up_kernel_size,padding = convPadding)
+        l1 = tf.layers.conv1d(l1,convFilters*(i+1),up_kernel_size,padding = convPadding,activation= tf.nn.leaky_relu)
             #print('l1\t\t',l1.shape)
         
         #CROP AND CONCAT
@@ -81,7 +81,7 @@ def WaveUNet(features):
 
     # Shaping to output dimention to play nicely with the loss
     # output to have 2 channels for stereo
-    fin = tf.layers.conv1d(l1,2,1) 
+    fin = tf.layers.conv1d(l1,2,1,activation=tf.nn.tanh) 
     print('final layer \t', fin.shape)
     print("############################") 
     return fin 
@@ -90,7 +90,7 @@ def WaveUNet(features):
 sess = tf.Session()
 
 rootpath = os.getcwd()
-trainglob = os.path.join(rootpath, 'train', '*.tfrecord')
+trainglob = os.path.join(rootpath, 'train92k', '*.tfrecord')
 train_files = glob.glob(trainglob)
 
 dataset = tf.data.TFRecordDataset([train_files], "ZLIB")
@@ -129,11 +129,14 @@ vocals = tf.decode_raw(tfrecord_features['vocals'], tf.float32)
 vocals = tf.reshape(vocals, shape)
 
 features  = mix #tf.placeholder(tf.float32, [None,16384,2])  # Should get batch size by 2 array of labels
-labels = vocals #tf.placeholder(tf.float32, [None,16384,2])     # Revisit this idk if it's right
+labels = drums #tf.placeholder(tf.float32, [None,16384,2])     # Revisit this idk if it's right
+
+print(sess.run(features))
+print(sess.run(labels))
 
 labels_predicted = WaveUNet(features) #this needs to be moved lower
 
-print('Num_params',np.sum([np.prod(v.get_shape().as_list()) for v in tf.trainable_variables()]))
+print('Num_params: ',np.sum([np.prod(v.get_shape().as_list()) for v in tf.trainable_variables()]))
 
 # Match the output shape to the ground truth shape for training
 off  = int(int(labels.shape[1]-labels_predicted.shape[1])/2)   #calculate how much needs to be cropped
@@ -142,21 +145,27 @@ labels= labels[:,off:-off,:] 		#crop what needs to be cropped in a repeatable ma
 loss = tf.losses.mean_squared_error(labels,labels_predicted)
 
 lr = .1
-optim = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9,beta2=0.999,epsilon=1e-08).minimize(loss)
+optim = tf.train.AdamOptimizer(learning_rate=0.0001,beta1=0.9,beta2=0.999).minimize(loss)
 #lets hope this works first. The paper gives slightly different parameters which we will update to later
 
 init  = tf.global_variables_initializer()
-
 sess.run(init)
+saver = tf.train.Saver()
+
+for epo in range(EPOCHS):
+    print('EPOCH',epo)
+    for k in tqdm(range(0, NUM_ITER)):
+        #x_np, labels_np = data.get_batch() # no more data.getBatch we use the tf records now
+        loss_np, yhats, _ = sess.run([loss, labels_predicted, optim]) #, {features:mix,labels:vocals}
+        if k%100 == 0:
+            print("Loss:", loss_np)
+    modelName = os.getcwd()+'/models/'+str(epo)+'loss:'+str(loss_np)+'.ckpt'
+    savePath = saver.save(sess,modelName)
+    print('Model saved at: ',savePath)
+    print('Loss:',loss_np)
+    sess.run(iterator.initializer)
 
 
-
-for k in tqdm(range(0, NUM_ITER)):
-    #x_np, labels_np = data.get_batch() # no more data.getBatch we use the tf records now
-    loss_np, yhats, _ = sess.run([loss, labels_predicted, optim]) #, {features:mix,labels:vocals}
-    if k%4000 == 0:
-        print(loss_np)
-print(loss_np)
 #figure out how to save weights and save them here
 #print(loss_np)
 
