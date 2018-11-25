@@ -22,6 +22,8 @@ NUM_ITER = 4000
 # Tell it what gpu to use
 os.environ['CUDA_VISIBLE_DEVICES'] = "0" 
 
+
+
 ################ Adding My Stuff Below This ################
 def loadWeights(file):
     #figure out how to load weights and push them into the model
@@ -157,7 +159,7 @@ features  = mix #tf.placeholder(tf.float32, [None,16384,2])  # Should get batch 
 labels = vocals #tf.placeholder(tf.float32, [None,16384,2])     # Revisit this idk if it's right
 
 labels_predicted = WaveUNet(features) #this needs to be moved lower
-
+print('num_params',np.sum([np.prod(v.get_shape().as_list()) for v in tf.trainable_variables()]))
 loss = tf.losses.mean_squared_error(labels,labels_predicted)
 # old loss from old project. Left as reference you can remove 
 #tf.losses.sigmoid_cross_entropy(tf.stack([labels, 1-labels], 1),tf.squeeze(tf.stack([labels_predicted, -labels_predicted], 1))) \
