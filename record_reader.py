@@ -43,70 +43,48 @@ def WaveUNet(features):
         return upsampled
     
     # PARAMETERS OF THE MODEL
-    convFilters = 24 # 15 not kernels so idk what to do with this now
-    convStride = 1
+    convFilters = 24 # num extra filters per layer
+    convStride = 1   
     convPadding = 'valid'   # 'valid' means none (switch to valid at some point
-    LAYERS = 12
-    down = []
-    current_layer = features
-    down_kernel_size =15
-    up_kernel_size = 5 #?
-    #garbage temp model to get everything running
-    print('shape of features ', features.shape) #features are the input
+    LAYERS = 12 	#how deep is  your love (for source separation using U nets)
+    down = []		#init array for storing the skip connections
+    down_kernel_size =15  #size of kernel on convolutions headed down
+    up_kernel_size = 5    # size of convs going up
     
+    print('shape of features ', features.shape) 
+
     l1 = features
     for i in range(LAYERS):
-        #perform 1d Conv
+        #perform 1d Conv using the parameters defined above
         l1 = tf.layers.conv1d(l1,convFilters*(i+1),down_kernel_size,padding = convPadding)
-        print("post conv 1d \t", l1.shape)
-        down.append(l1)
+        print("post conv 1d \t", l1.shape) # print the shape for sanity sake
+        down.append(l1) #append the convolved layer to the skip connection list
         
         #downsample
-        l1 = l1[:,::2,:]
+        l1 = l1[:,::2,:] 
         print("l1d \t\t", l1.shape)
 
     for i in reversed( range(LAYERS)):
         #upsampling
         l1 =UpSample(l1)
-        #print('presqueeze \t',l1.shape)
-        l1 = tf.squeeze(l1,1)
-        #print('postsqueeze\t',l1.shape)
-        l1 = l1[:,:-1,:] #exclude the last one to do the linear upsampling with an odd output 
-        #print('postslice\t',l1.shape)
+        l1 = tf.squeeze(l1,1) #upsampling introduces a dimention of rank 1 so we need to remove it 
+        l1 = l1[:,:-1,:] #linear upsampling with an odd outputs excludes the last upsampled value  
+        
+        # 1D Convolution going upwards the U (for reducing filter dimention)
         l1 = tf.layers.conv1d(l1,convFilters*(i+1),up_kernel_size,padding = convPadding)
-        print(l1.shape)#17,288
+            #print('l1\t\t',l1.shape)
+        
         #CROP AND CONCAT
-        offset = int(int(down[i].shape[1]-l1.shape[1])/2)
-        l1 = tf.concat([l1,down[i][:,offset:-offset,:]],2)
-        print( 'concatenated', l1.shape)
+        offset = int(int(down[i].shape[1]-l1.shape[1])/2)   #calculate how much needs to be cropped
+        l1 = tf.concat([l1,down[i][:,offset:-offset,:]],2)  #crop the saved layer to perform a skip
+        print( 'concatenated\t', l1.shape)					#print for sanity
 
-    #for i in range(len(down)):
-        #print(down[i].shape)
-    # Shaping to output dimention
-    fin = tf.layers.conv1d(l1,2,1)
+    # Shaping to output dimention to play nicely with the loss
+    # output to have 2 channels for stereo
+    fin = tf.layers.conv1d(l1,2,1) 
     print('final layer \t', fin.shape)
-    
-    print("############################")
-    #how to reduce the dimention later on to one you need for the output.
-    predictions = fin
-    # This is where we build the real model
-    '''
-    for i in range(LAYERS):
-        #the going down part
-        current_layer = tf.layers.conv1d(features,downconvFilters+(downconvFilters*i),convStride,convPadding)
-        down.append(current_layer)
-        current_layer = current_layer[:,::2,:] 
-            
-    # middle part   
-    current_layer = tf.layers.conv1d(features,downconvFilters+(downconvFilters*i),convStride,convPadding)
-
-    for j in range(LAYERS):
-        #the going up part
-        current_layer= UpSample(down[i-j])
-        current_layer = tf.layers.conv1d(features,upconvFilters+(upconvFilters*i),convStride,convPadding)
-    '''
-
-    return predictions
+    print("############################") 
+    return fin 
 
 
 sess = tf.Session()
@@ -137,34 +115,31 @@ shape = [-1, 98291, 2] #[numsongs, numsamples per song, num channels]
 
 mix = tf.decode_raw(tfrecord_features['mix'], tf.float32)
 mix = tf.reshape(mix, shape)
-#mix = sess.run(mix) #this initialization using sess fixed the graph problem where it was running out of data or whatever
 
 drums = tf.decode_raw(tfrecord_features['drums'], tf.float32)
 drums = tf.reshape(drums, shape)
-#drums = sess.run(drums)
 
 bass = tf.decode_raw(tfrecord_features['bass'], tf.float32)
 bass = tf.reshape(bass, shape) 
-#bass = sess.run(bass)
 
 accomp = tf.decode_raw(tfrecord_features['accomp'], tf.float32)
 accomp = tf.reshape(accomp, shape)
-#accomp = sess.run(accomp)
 
 vocals = tf.decode_raw(tfrecord_features['vocals'], tf.float32)
 vocals = tf.reshape(vocals, shape)
-#vocals = sess.run(vocals)
 
 features  = mix #tf.placeholder(tf.float32, [None,16384,2])  # Should get batch size by 2 array of labels
 labels = vocals #tf.placeholder(tf.float32, [None,16384,2])     # Revisit this idk if it's right
 
 labels_predicted = WaveUNet(features) #this needs to be moved lower
-print('num_params',np.sum([np.prod(v.get_shape().as_list()) for v in tf.trainable_variables()]))
+
+print('Num_params',np.sum([np.prod(v.get_shape().as_list()) for v in tf.trainable_variables()]))
+
+# Match the output shape to the ground truth shape for training
+off  = int(int(labels.shape[1]-labels_predicted.shape[1])/2)   #calculate how much needs to be cropped
+labels= labels[:,off:-off,:] 		#crop what needs to be cropped in a repeatable manner
+
 loss = tf.losses.mean_squared_error(labels,labels_predicted)
-# old loss from old project. Left as reference you can remove 
-#tf.losses.sigmoid_cross_entropy(tf.stack([labels, 1-labels], 1),tf.squeeze(tf.stack([labels_predicted, -labels_predicted], 1))) \
-#      + l*tf.reduce_sum([tf.nn.l2_loss(tV) for tV in tf.trainable_variables()])
-#loss  = tf.reduce_mean(tf.pow(y-y_hat, 2)/2) #loss funtion = cross entropy + L2 norm
 
 lr = .1
 optim = tf.train.AdamOptimizer(learning_rate=0.001,beta1=0.9,beta2=0.999,epsilon=1e-08).minimize(loss)
