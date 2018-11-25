@@ -41,30 +41,47 @@ def WaveUNet(features):
         return upsampled
     
     # PARAMETERS OF THE MODEL
-    downconvFilters = 24 # 15 not kernels so idk what to do with this now
-    upconvFilters = 15 #?
+    convFilters = 24 # 15 not kernels so idk what to do with this now
     convStride = 1
-    convPadding = 'same'   # 'valid' means none (switch to valid at some point
+    convPadding = 'valid'   # 'valid' means none (switch to valid at some point
     LAYERS = 12
     down = []
     current_layer = features
-    kernel_size =15
+    down_kernel_size =15
+    up_kernel_size = 5 #?
     #garbage temp model to get everything running
     print('shape of features ', features.shape) #features are the input
-    l1 = tf.layers.conv1d(features,downconvFilters,kernel_size,padding = convPadding)
-    print("post conv 1d \t", l1.shape)
-    #downsample
-    l1d = l1[:,::2,:]
-    print("l1d \t\t", l1d.shape)
     
-    #upsampling
-    l1U =UpSample(l1d)
-    print('presqueeze \t',l1U.shape)
-    l1U = tf.squeeze(l1U,1)
-    print('postsqueeze\t',l1U.shape)
+    l1 = features
+    for i in range(LAYERS):
+        #perform 1d Conv
+        l1 = tf.layers.conv1d(l1,convFilters*(i+1),down_kernel_size,padding = convPadding)
+        print("post conv 1d \t", l1.shape)
+        down.append(l1)
+        
+        #downsample
+        l1 = l1[:,::2,:]
+        print("l1d \t\t", l1.shape)
 
+    for i in reversed( range(LAYERS)):
+        #upsampling
+        l1 =UpSample(l1)
+        #print('presqueeze \t',l1.shape)
+        l1 = tf.squeeze(l1,1)
+        #print('postsqueeze\t',l1.shape)
+        l1 = l1[:,:-1,:] #exclude the last one to do the linear upsampling with an odd output 
+        #print('postslice\t',l1.shape)
+        l1 = tf.layers.conv1d(l1,convFilters*(i+1),up_kernel_size,padding = convPadding)
+        print(l1.shape)#17,288
+        #CROP AND CONCAT
+        offset = int(int(down[i].shape[1]-l1.shape[1])/2)
+        l1 = tf.concat([l1,down[i][:,offset:-offset,:]],2)
+        print( 'concatenated', l1.shape)
+
+    #for i in range(len(down)):
+        #print(down[i].shape)
     # Shaping to output dimention
-    fin = tf.layers.conv1d(l1U,2,1)
+    fin = tf.layers.conv1d(l1,2,1)
     print('final layer \t', fin.shape)
     
     print("############################")
@@ -114,7 +131,7 @@ tfrecord_features = tf.parse_example(rslt,
                                                 'vocals': tf.FixedLenFeature([], tf.string),
                                             }, name='features')
 
-shape = [-1, 16384, 2] #[numsongs, numsamples per song, num channels]
+shape = [-1, 98291, 2] #[numsongs, numsamples per song, num channels]
 
 mix = tf.decode_raw(tfrecord_features['mix'], tf.float32)
 mix = tf.reshape(mix, shape)
