@@ -33,7 +33,7 @@ train_files = glob.glob(trainglob)
 test_files = glob.glob(testglob)
 
 FRAGMENT_LENGTH = 98291 #16384
-
+FRAGMENT_OFFSET = 24581
 
 def serialize_bytes(value):
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
@@ -57,7 +57,7 @@ def process_file(filename, record_path, filenum):
     # print(np.array(S.shape, np.int32)[1:])
     samples = S.shape[1]
     # print("File has %d samples"%samples)
-    for i in range(0, samples, FRAGMENT_LENGTH):
+    for i in range(0, samples, FRAGMENT_OFFSET):
         if i + FRAGMENT_LENGTH <= samples:
             # Work around https://github.com/faroit/stempeg/issues/8
             example = write_segment(S[:, i:i + FRAGMENT_LENGTH].astype(np.float32), rate)
@@ -86,7 +86,7 @@ def process_file_list(file_list, record_path):
 
 
 print("Processing train data...")
-traindest = os.path.join(destpath, 'train92k')
+traindest = os.path.join(destpath, 'train92k_ovlp')
 
 try:
     os.mkdir(traindest)
@@ -95,7 +95,7 @@ except FileExistsError:
 process_file_list(train_files, traindest)
 
 print("Processing test data...")
-testdest = os.path.join(destpath, 'test92k')
+testdest = os.path.join(destpath, 'test92k_ovlp')
 try:
     os.mkdir(testdest)
 except FileExistsError:

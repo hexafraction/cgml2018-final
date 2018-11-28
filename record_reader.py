@@ -148,24 +148,27 @@ lr = .1
 optim = tf.train.AdamOptimizer(learning_rate=0.0001,beta1=0.9,beta2=0.999).minimize(loss)
 #lets hope this works first. The paper gives slightly different parameters which we will update to later
 
+tf.summary.scalar("122L", loss);
 init  = tf.global_variables_initializer()
 sess.run(init)
+writer = tf.summary.FileWriter("trainlog", sess.graph);
 saver = tf.train.Saver()
-
+merged = tf.summary.merge_all();
 for epo in range(EPOCHS):
     print('EPOCH',epo)
     for k in tqdm(range(0, NUM_ITER)):
         #x_np, labels_np = data.get_batch() # no more data.getBatch we use the tf records now
-        loss_np, yhats, _ = sess.run([loss, labels_predicted, optim]) #, {features:mix,labels:vocals}
+        loss_np, _, summ = sess.run([loss, optim, merged]) #, {features:mix,labels:vocals}
         if k%100 == 0:
             print("Loss:", loss_np)
+        writer.add_summary(summ, k+epo*NUM_ITER);
     modelName = os.getcwd()+'/models/'+str(epo)+'loss:'+str(loss_np)+'.ckpt'
     savePath = saver.save(sess,modelName)
     print('Model saved at: ',savePath)
     print('Loss:',loss_np)
     sess.run(iterator.initializer)
 
-
+writer.close();
 #figure out how to save weights and save them here
 #print(loss_np)
 
