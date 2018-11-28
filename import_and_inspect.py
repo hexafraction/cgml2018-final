@@ -101,7 +101,7 @@ def WaveUNet(features):
 sess = tf.Session()
 
 rootpath = os.getcwd()
-trainglob = os.path.join(rootpath, 'train92k', '*.tfrecord')
+trainglob = os.path.join(rootpath, 'test92k', '*.tfrecord')
 train_files = glob.glob(trainglob)
 
 dataset = tf.data.TFRecordDataset([train_files], "ZLIB")
