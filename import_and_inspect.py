@@ -25,7 +25,7 @@ BATCH_SIZE = 10
 NUM_ITER = 1000  # 1020 #change to more when we get a more robust record parser
 EPOCHS = 500  # should be like 2000 but really 20 iterations after it stops improoving the loss
 # Tell it what gpu to use
-os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+os.environ['CUDA_VISIBLE_DEVICES'] = "2"
 
 
 ################ Adding My Stuff Below This ################
