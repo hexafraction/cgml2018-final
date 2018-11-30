@@ -92,13 +92,27 @@ sess = tf.Session()
 rootpath = os.getcwd()
 trainglob = os.path.join(rootpath, 'train92k', '*.tfrecord')
 train_files = glob.glob(trainglob)
+valglob = os.path.join(rootpath, 'train92k', '*.tfrecord')
+validation_files = glob.glob(valglob)
 
-dataset = tf.data.TFRecordDataset([train_files], "ZLIB")
-dataset = dataset.batch(BATCH_SIZE, True)
-iterator = dataset.make_initializable_iterator()
+train_dataset = tf.data.TFRecordDataset([train_files], "ZLIB")
+train_dataset = train_dataset.batch(BATCH_SIZE, True)
+train_iterator = train_dataset.make_initializable_iterator()
 
-sess.run(iterator.initializer)
-rslt = iterator.get_next()
+val_dataset = tf.data.TFRecordDataset([validation_files], "ZLIB").batch(BATCH_SIZE, True)
+val_iterator = val_dataset.make_initializable_iterator()
+
+sess.run(train_iterator.initializer)
+sess.run(val_iterator.initializer)
+
+handle = tf.placeholder(tf.string, shape=[])
+
+train_handle = sess.run(train_iterator.string_handle())
+val_handle = sess.run(val_iterator.string_handle())
+
+joint_iterator = tf.data.Iterator.from_string_handle(handle, train_dataset.output_types, train_dataset.output_shapes)
+
+rslt = joint_iterator.get_next()
 
 tfrecord_features = tf.parse_example(rslt,
                                             features={
@@ -158,7 +172,7 @@ for epo in range(EPOCHS):
     print('EPOCH',epo)
     for k in tqdm(range(0, NUM_ITER)):
         #x_np, labels_np = data.get_batch() # no more data.getBatch we use the tf records now
-        loss_np, _, summ = sess.run([loss, optim, merged]) #, {features:mix,labels:vocals}
+        loss_np, _, summ = sess.run([loss, optim, merged], feed_dict={handle: train_handle}) #, {features:mix,labels:vocals}
         if k%100 == 0:
             print("Loss:", loss_np)
         writer.add_summary(summ, k+epo*NUM_ITER);
@@ -166,9 +180,16 @@ for epo in range(EPOCHS):
     savePath = saver.save(sess,modelName)
     print('Model saved at: ',savePath)
     print('Loss:',loss_np)
-    sess.run(iterator.initializer)
+    sess.run(train_iterator.initializer)
 
 writer.close();
+
+## HOW TO VALIDATE:
+# call as follows (if False used to skip this while still highlighting/syntax checking it)
+if(False):
+    sess.run(loss, feed_dict={handle: val_handle})
+
+
 #figure out how to save weights and save them here
 #print(loss_np)
 
