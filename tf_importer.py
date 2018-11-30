@@ -17,6 +17,7 @@ import numpy as np
 import stempeg
 import tensorflow as tf
 import gc
+import resampy
 from tqdm import tqdm
 
 rootpath = os.getcwd()
@@ -34,6 +35,7 @@ test_files = glob.glob(testglob)
 
 FRAGMENT_LENGTH = 98291 #16384
 FRAGMENT_OFFSET = 24581
+RESAMPLED_RATE = 22050
 
 def serialize_bytes(value):
     return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
@@ -54,15 +56,24 @@ def process_file(filename, record_path, filenum):
     gc.collect()
     S, rate = stempeg.read_stems(filename, np.float32)
 
+    print("File has %d samples"%S.shape[1])
+    Sr = resample_helper(S, rate)
+    #S = nnresample.resample(S[:,1:100000, :], rate, RESAMPLED_RATE, 1)
     # print(np.array(S.shape, np.int32)[1:])
-    samples = S.shape[1]
-    # print("File has %d samples"%samples)
+    samples = Sr.shape[1]
+    print("After resample: File has %d samples"%samples)
     for i in range(0, samples, FRAGMENT_OFFSET):
         if i + FRAGMENT_LENGTH <= samples:
             # Work around https://github.com/faroit/stempeg/issues/8
-            example = write_segment(S[:, i:i + FRAGMENT_LENGTH].astype(np.float32), rate)
+            example = write_segment(Sr[:, i:i + FRAGMENT_LENGTH].astype(np.float32), rate)
             writer.write(example.SerializeToString())
     writer.close()
+
+
+def resample_helper(S, rate):
+    Sl = [S[i] for i in range(S.shape[0])]
+    Slr = [resampy.resample(x, rate, RESAMPLED_RATE, 0) for x in Sl]
+    return np.stack(Slr)
 
 
 # @profilet 
