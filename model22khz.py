@@ -21,7 +21,7 @@ BATCH_SIZE = 10
 NUM_ITER = 1000  # 1020 #change to more when we get a more robust record parser
 EPOCHS = 500  # should be like 2000 but really 20 iterations after it stops improoving the loss
 # Tell it what gpu to use
-os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+#os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
 
 # Accepts tensors of shape [BatchSize, Samples, Channels].
@@ -68,7 +68,7 @@ def WaveUNet(features):
     convFilters = 24  # num extra filters per layer
     convStride = 1
     convPadding = 'valid'  # 'valid' means none (switch to valid at some point
-    LAYERS = 12  # how deep is  your love (for source separation using U nets)
+    LAYERS = 11  # how deep is  your love (for source separation using U nets)
     down = []  # init array for storing the skip connections
     down_kernel_size = 15  # size of kernel on convolutions headed down
     up_kernel_size = 5  # size of convs going up
@@ -87,7 +87,7 @@ def WaveUNet(features):
         l1 = l1[:, ::2, :]
         print("l1d \t\t", l1.shape)
 
-    for i in reversed(range(LAYERS)):
+    for i in reversed(range(LAYERS-1)):
         # upsampling
         l1 = UpSample(l1)
         l1 = tf.squeeze(l1, 1)  # upsampling introduces a dimention of rank 1 so we need to remove it
@@ -149,7 +149,7 @@ tfrecord_features = tf.parse_example(rslt,
                                          'vocals': tf.FixedLenFeature([], tf.string),
                                      }, name='features')
 
-shape = [-1, 98291, 2]  # [numsongs, numsamples per song, num channels]
+shape = [-1, 65523, 2]  # [numsongs, numsamples per song, num channels]
 
 mix = tf.decode_raw(tfrecord_features['mix'], tf.float32)
 mix = tf.reshape(mix, shape)
@@ -267,4 +267,4 @@ sess.run(mix)
 print(mix)
 '''
 ### End Andrey's code ###
-##########################################################################################
+#

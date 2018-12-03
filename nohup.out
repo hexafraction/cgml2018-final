@@ -1,0 +1,379 @@
+  0%|          | 0/100 [00:00<?, ?it/s]  1%|          | 1/100 [00:45<1:15:15, 45.61s/it]  2%|▏         | 2/100 [00:50<54:45, 33.53s/it]    3%|▎         | 3/100 [01:41<1:02:22, 38.58s/it]  4%|▍         | 4/100 [03:09<1:25:19, 53.33s/it]  5%|▌         | 5/100 [03:48<1:18:00, 49.27s/it]  6%|▌         | 6/100 [04:46<1:21:15, 51.87s/it]  7%|▋         | 7/100 [05:40<1:21:26, 52.54s/it]  8%|▊         | 8/100 [06:32<1:20:12, 52.31s/it]  9%|▉         | 9/100 [07:40<1:26:17, 56.90s/it] 10%|█         | 10/100 [08:45<1:28:55, 59.28s/it] 11%|█         | 11/100 [10:19<1:43:21, 69.68s/it] 12%|█▏        | 12/100 [11:16<1:36:48, 66.00s/it] 13%|█▎        | 13/100 [12:45<1:45:39, 72.87s/it] 14%|█▍        | 14/100 [13:31<1:33:06, 64.96s/it] 15%|█▌        | 15/100 [15:27<1:53:29, 80.11s/it] 16%|█▌        | 16/100 [16:40<1:49:14, 78.03s/it] 17%|█▋        | 17/100 [16:48<1:18:50, 57.00s/it] 18%|█▊        | 18/100 [17:47<1:18:39, 57.55s/it] 19%|█▉        | 19/100 [18:44<1:17:36, 57.49s/it] 20%|██        | 20/100 [19:37<1:14:41, 56.02s/it] 21%|██        | 21/100 [20:34<1:14:23, 56.50s/it] 22%|██▏       | 22/100 [22:12<1:29:23, 68.76s/it] 23%|██▎       | 23/100 [22:18<1:04:05, 49.94s/it] 24%|██▍       | 24/100 [23:15<1:06:08, 52.22s/it] 25%|██▌       | 25/100 [24:23<1:10:56, 56.75s/it] 26%|██▌       | 26/100 [25:26<1:12:28, 58.76s/it] 27%|██▋       | 27/100 [26:23<1:10:57, 58.32s/it] 28%|██▊       | 28/100 [27:26<1:11:40, 59.73s/it] 29%|██▉       | 29/100 [28:22<1:09:22, 58.63s/it] 30%|███       | 30/100 [29:19<1:07:46, 58.09s/it] 31%|███       | 31/100 [30:03<1:01:54, 53.83s/it] 32%|███▏      | 32/100 [31:04<1:03:33, 56.08s/it] 33%|███▎      | 33/100 [31:09<45:12, 40.49s/it]   34%|███▍      | 34/100 [32:15<52:56, 48.13s/it] 35%|███▌      | 35/100 [32:53<48:57, 45.19s/it] 36%|███▌      | 36/100 [33:57<54:21, 50.96s/it] 37%|███▋      | 37/100 [34:45<52:25, 49.93s/it] 38%|███▊      | 38/100 [35:52<56:58, 55.13s/it] 39%|███▉      | 39/100 [36:00<41:45, 41.07s/it] 40%|████      | 40/100 [36:46<42:26, 42.43s/it] 41%|████      | 41/100 [37:21<39:40, 40.36s/it] 42%|████▏     | 42/100 [38:02<39:08, 40.50s/it] 43%|████▎     | 43/100 [38:47<39:46, 41.86s/it] 44%|████▍     | 44/100 [39:05<32:09, 34.46s/it] 45%|████▌     | 45/100 [39:58<36:49, 40.17s/it] 46%|████▌     | 46/100 [42:18<1:03:14, 70.26s/it] 47%|████▋     | 47/100 [43:02<54:58, 62.23s/it]   48%|████▊     | 48/100 [43:57<51:58, 59.98s/it] 49%|████▉     | 49/100 [44:34<45:06, 53.08s/it] 50%|█████     | 50/100 [45:27<44:12, 53.05s/it] 51%|█████     | 51/100 [45:52<36:34, 44.80s/it] 52%|█████▏    | 52/100 [46:38<36:04, 45.10s/it] 53%|█████▎    | 53/100 [47:30<36:53, 47.09s/it] 54%|█████▍    | 54/100 [48:12<35:04, 45.74s/it] 55%|█████▌    | 55/100 [48:52<32:54, 43.87s/it] 56%|█████▌    | 56/100 [49:29<30:45, 41.94s/it] 57%|█████▋    | 57/100 [50:12<30:13, 42.18s/it] 58%|█████▊    | 58/100 [51:15<33:56, 48.50s/it] 59%|█████▉    | 59/100 [52:04<33:11, 48.57s/it] 60%|██████    | 60/100 [53:08<35:33, 53.34s/it] 61%|██████    | 61/100 [54:28<39:44, 61.14s/it] 62%|██████▏   | 62/100 [56:00<44:32, 70.33s/it] 63%|██████▎   | 63/100 [56:51<39:47, 64.52s/it] 64%|██████▍   | 64/100 [57:53<38:16, 63.79s/it] 65%|██████▌   | 65/100 [59:03<38:25, 65.88s/it] 66%|██████▌   | 66/100 [1:00:05<36:40, 64.71s/it] 67%|██████▋   | 67/100 [1:00:50<32:17, 58.70s/it] 68%|██████▊   | 68/100 [1:01:23<27:09, 50.94s/it] 69%|██████▉   | 69/100 [1:02:07<25:15, 48.90s/it] 70%|███████   | 70/100 [1:03:40<31:03, 62.11s/it] 71%|███████   | 71/100 [1:04:43<30:05, 62.27s/it] 72%|███████▏  | 72/100 [1:04:46<20:47, 44.55s/it] 73%|███████▎  | 73/100 [1:04:52<14:55, 33.16s/it] 74%|███████▍  | 74/100 [1:05:44<16:42, 38.57s/it] 75%|███████▌  | 75/100 [1:07:03<21:10, 50.81s/it] 76%|███████▌  | 76/100 [1:07:11<15:13, 38.06s/it] 77%|███████▋  | 77/100 [1:08:21<18:14, 47.58s/it] 78%|███████▊  | 78/100 [1:09:16<18:16, 49.85s/it] 79%|███████▉  | 79/100 [1:10:00<16:49, 48.08s/it] 80%|████████  | 80/100 [1:10:57<16:53, 50.67s/it] 81%|████████  | 81/100 [1:11:01<11:37, 36.70s/it] 82%|████████▏ | 82/100 [1:11:29<10:13, 34.06s/it] 83%|████████▎ | 83/100 [1:12:24<11:28, 40.48s/it] 84%|████████▍ | 84/100 [1:13:03<10:40, 40.04s/it] 85%|████████▌ | 85/100 [1:13:50<10:30, 42.00s/it] 86%|████████▌ | 86/100 [1:14:26<09:24, 40.34s/it] 87%|████████▋ | 87/100 [1:15:39<10:50, 50.05s/it] 88%|████████▊ | 88/100 [1:16:21<09:32, 47.69s/it] 89%|████████▉ | 89/100 [1:17:08<08:42, 47.51s/it] 90%|█████████ | 90/100 [1:18:01<08:11, 49.11s/it] 91%|█████████ | 91/100 [1:19:13<08:24, 56.04s/it] 92%|█████████▏| 92/100 [1:20:07<07:23, 55.43s/it] 93%|█████████▎| 93/100 [1:21:07<06:36, 56.65s/it] 94%|█████████▍| 94/100 [1:22:01<05:35, 55.85s/it] 95%|█████████▌| 95/100 [1:22:47<04:24, 52.90s/it] 96%|█████████▌| 96/100 [1:23:36<03:27, 51.79s/it] 97%|█████████▋| 97/100 [1:24:30<02:37, 52.51s/it] 98%|█████████▊| 98/100 [1:25:08<01:35, 47.95s/it] 99%|█████████▉| 99/100 [1:25:17<00:36, 36.42s/it]100%|██████████| 100/100 [1:25:25<00:00, 27.99s/it]
+  0%|          | 0/50 [00:00<?, ?it/s]  2%|▏         | 1/50 [00:36<29:45, 36.44s/it]  4%|▍         | 2/50 [01:18<30:30, 38.13s/it]  6%|▌         | 3/50 [02:19<35:07, 44.84s/it]  8%|▊         | 4/50 [03:19<37:59, 49.56s/it] 10%|█         | 5/50 [04:22<40:16, 53.70s/it] 12%|█▏        | 6/50 [05:11<38:20, 52.29s/it] 14%|█▍        | 7/50 [06:27<42:25, 59.20s/it] 16%|█▌        | 8/50 [07:32<42:42, 61.01s/it] 18%|█▊        | 9/50 [08:43<43:48, 64.12s/it] 20%|██        | 10/50 [09:40<41:11, 61.78s/it] 22%|██▏       | 11/50 [10:26<37:07, 57.12s/it] 24%|██▍       | 12/50 [11:29<37:15, 58.83s/it] 26%|██▌       | 13/50 [13:04<43:03, 69.84s/it] 28%|██▊       | 14/50 [13:46<36:49, 61.39s/it] 30%|███       | 15/50 [14:32<33:07, 56.79s/it] 32%|███▏      | 16/50 [15:59<37:23, 65.99s/it] 34%|███▍      | 17/50 [16:54<34:21, 62.46s/it] 36%|███▌      | 18/50 [17:25<28:21, 53.17s/it] 38%|███▊      | 19/50 [18:18<27:20, 52.93s/it] 40%|████      | 20/50 [19:14<27:00, 54.00s/it] 42%|████▏     | 21/50 [20:01<25:04, 51.88s/it] 44%|████▍     | 22/50 [20:56<24:40, 52.89s/it]Processing train data...
+File has 8264704 samples
+After resample: File has 4132352 samples
+File has 869376 samples
+After resample: File has 434688 samples
+File has 9890816 samples
+After resample: File has 4945408 samples
+File has 17280000 samples
+After resample: File has 8640000 samples
+File has 7730176 samples
+After resample: File has 3865088 samples
+File has 11488256 samples
+After resample: File has 5744128 samples
+File has 10647552 samples
+After resample: File has 5323776 samples
+File has 10262528 samples
+After resample: File has 5131264 samples
+File has 13383680 samples
+After resample: File has 6691840 samples
+File has 12990464 samples
+After resample: File has 6495232 samples
+File has 18580480 samples
+After resample: File has 9290240 samples
+File has 11295744 samples
+After resample: File has 5647872 samples
+File has 17577984 samples
+After resample: File has 8788992 samples
+File has 9161728 samples
+After resample: File has 4580864 samples
+File has 22682624 samples
+After resample: File has 11341312 samples
+File has 13671424 samples
+After resample: File has 6835712 samples
+File has 1525760 samples
+After resample: File has 762880 samples
+File has 11661312 samples
+After resample: File has 5830656 samples
+File has 11355136 samples
+After resample: File has 5677568 samples
+File has 10481664 samples
+After resample: File has 5240832 samples
+File has 11428864 samples
+After resample: File has 5714432 samples
+File has 19188736 samples
+After resample: File has 9594368 samples
+File has 1137664 samples
+After resample: File has 568832 samples
+File has 11448320 samples
+After resample: File has 5724160 samples
+File has 13302784 samples
+After resample: File has 6651392 samples
+File has 12606464 samples
+After resample: File has 6303232 samples
+File has 11394048 samples
+After resample: File has 5697024 samples
+File has 12461056 samples
+After resample: File has 6230528 samples
+File has 11166720 samples
+After resample: File has 5583360 samples
+File has 11322368 samples
+After resample: File has 5661184 samples
+File has 8743936 samples
+After resample: File has 4371968 samples
+File has 12130304 samples
+After resample: File has 6065152 samples
+File has 763904 samples
+After resample: File has 381952 samples
+File has 13002752 samples
+After resample: File has 6501376 samples
+File has 7554048 samples
+After resample: File has 3777024 samples
+File has 12759040 samples
+After resample: File has 6379520 samples
+File has 9387008 samples
+After resample: File has 4693504 samples
+File has 13321216 samples
+After resample: File has 6660608 samples
+File has 1597440 samples
+After resample: File has 798720 samples
+File has 9016320 samples
+After resample: File has 4508160 samples
+File has 7018496 samples
+After resample: File has 3509248 samples
+File has 8013824 samples
+After resample: File has 4006912 samples
+File has 8916992 samples
+After resample: File has 4458496 samples
+File has 3334144 samples
+After resample: File has 1667072 samples
+File has 10539008 samples
+After resample: File has 5269504 samples
+File has 27713536 samples
+After resample: File has 13856768 samples
+File has 7435264 samples
+After resample: File has 3717632 samples
+File has 10895360 samples
+After resample: File has 5447680 samples
+File has 7301120 samples
+After resample: File has 3650560 samples
+File has 10491904 samples
+After resample: File has 5245952 samples
+File has 5021696 samples
+After resample: File has 2510848 samples
+File has 8409088 samples
+After resample: File has 4204544 samples
+File has 10224640 samples
+After resample: File has 5112320 samples
+File has 8445952 samples
+After resample: File has 4222976 samples
+File has 7790592 samples
+After resample: File has 3895296 samples
+File has 7404544 samples
+After resample: File has 3702272 samples
+File has 8461312 samples
+After resample: File has 4230656 samples
+File has 12492800 samples
+After resample: File has 6246400 samples
+File has 9637888 samples
+After resample: File has 4818944 samples
+File has 12781568 samples
+After resample: File has 6390784 samples
+File has 15671296 samples
+After resample: File has 7835648 samples
+File has 18194432 samples
+After resample: File has 9097216 samples
+File has 10055680 samples
+After resample: File has 5027840 samples
+File has 12282880 samples
+After resample: File has 6141440 samples
+File has 13974528 samples
+After resample: File has 6987264 samples
+File has 12253184 samples
+After resample: File has 6126592 samples
+File has 8897536 samples
+After resample: File has 4448768 samples
+File has 6473728 samples
+After resample: File has 3236864 samples
+File has 8626176 samples
+After resample: File has 4313088 samples
+File has 18463744 samples
+After resample: File has 9231872 samples
+File has 11261952 samples
+After resample: File has 5630976 samples
+File has 571392 samples
+After resample: File has 285696 samples
+File has 1262592 samples
+After resample: File has 631296 samples
+File has 10177536 samples
+After resample: File has 5088768 samples
+File has 15741952 samples
+After resample: File has 7870976 samples
+File has 1615872 samples
+After resample: File has 807936 samples
+File has 13900800 samples
+After resample: File has 6950400 samples
+File has 10943488 samples
+After resample: File has 5471744 samples
+File has 8673280 samples
+After resample: File has 4336640 samples
+File has 11220992 samples
+After resample: File has 5610496 samples
+File has 763904 samples
+After resample: File has 381952 samples
+File has 5496832 samples
+After resample: File has 2748416 samples
+File has 10937344 samples
+After resample: File has 5468672 samples
+File has 7643136 samples
+After resample: File has 3821568 samples
+File has 9259008 samples
+After resample: File has 4629504 samples
+File has 7206912 samples
+After resample: File has 3603456 samples
+File has 14370816 samples
+After resample: File has 7185408 samples
+File has 8340480 samples
+After resample: File has 4170240 samples
+File has 9303040 samples
+After resample: File has 4651520 samples
+File has 10440704 samples
+After resample: File has 5220352 samples
+File has 14312448 samples
+After resample: File has 7156224 samples
+File has 10672128 samples
+After resample: File has 5336064 samples
+File has 11823104 samples
+After resample: File has 5911552 samples
+File has 10697728 samples
+After resample: File has 5348864 samples
+File has 9063424 samples
+After resample: File has 4531712 samples
+File has 9741312 samples
+After resample: File has 4870656 samples
+File has 10747904 samples
+After resample: File has 5373952 samples
+File has 7358464 samples
+After resample: File has 3679232 samples
+File has 1839104 samples
+After resample: File has 919552 samples
+File has 1622016 samples
+After resample: File has 811008 samples
+Processing test data...
+File has 7169024 samples
+After resample: File has 3584512 samples
+File has 8393728 samples
+After resample: File has 4196864 samples
+File has 11996160 samples
+After resample: File has 5998080 samples
+File has 12058624 samples
+After resample: File has 6029312 samples
+File has 12643328 samples
+After resample: File has 6321664 samples
+File has 9701376 samples
+After resample: File has 4850688 samples
+File has 14857216 samples
+After resample: File has 7428608 samples
+File has 12907520 samples
+After resample: File has 6453760 samples
+File has 14118912 samples
+After resample: File has 7059456 samples
+File has 11235328 samples
+After resample: File has 5617664 samples
+File has 9161728 samples
+After resample: File has 4580864 samples
+File has 12412928 samples
+After resample: File has 6206464 samples
+File has 18973696 samples
+After resample: File has 9486848 samples
+File has 7913472 samples
+After resample: File has 3956736 samples
+File has 9055232 samples
+After resample: File has 4527616 samples
+File has 17442816 samples
+After resample: File has 8721408 samples
+File has 10739712 samples
+After resample: File has 5369856 samples
+File has 6241280 samples
+After resample: File has 3120640 samples
+File has 10343424 samples
+After resample: File has 5171712 samples
+File has 11201536 samples
+After resample: File has 5600768 samples
+File has 9259008 samples
+After resample: File has 4629504 samples
+File has 10886144 samples
+After resample: File has 5443072 samples
+File has 14610432 samples
+After resample: File has 7305216 samples 46%|████▌     | 23/50 [22:10<26:38, 59.20s/it] 48%|████▊     | 24/50 [22:58<24:06, 55.64s/it] 50%|█████     | 25/50 [24:08<25:04, 60.17s/it] 52%|█████▏    | 26/50 [25:04<23:34, 58.92s/it] 54%|█████▍    | 27/50 [25:58<22:01, 57.46s/it] 56%|█████▌    | 28/50 [26:54<20:53, 56.98s/it] 58%|█████▊    | 29/50 [28:04<21:14, 60.68s/it] 60%|██████    | 30/50 [29:00<19:48, 59.44s/it] 62%|██████▏   | 31/50 [30:17<20:27, 64.60s/it] 64%|██████▍   | 32/50 [31:17<18:59, 63.32s/it] 66%|██████▌   | 33/50 [32:13<17:19, 61.14s/it] 68%|██████▊   | 34/50 [33:15<16:20, 61.25s/it] 70%|███████   | 35/50 [34:04<14:24, 57.65s/it] 72%|███████▏  | 36/50 [34:53<12:51, 55.11s/it] 74%|███████▍  | 37/50 [35:46<11:47, 54.39s/it] 76%|███████▌  | 38/50 [36:45<11:10, 55.90s/it] 78%|███████▊  | 39/50 [37:40<10:11, 55.56s/it] 80%|████████  | 40/50 [38:24<08:41, 52.17s/it] 82%|████████▏ | 41/50 [39:24<08:10, 54.50s/it] 84%|████████▍ | 42/50 [39:41<05:46, 43.32s/it] 86%|████████▌ | 43/50 [40:20<04:54, 42.05s/it] 88%|████████▊ | 44/50 [41:09<04:24, 44.11s/it] 90%|█████████ | 45/50 [41:51<03:37, 43.40s/it] 92%|█████████▏| 46/50 [43:02<03:26, 51.58s/it] 94%|█████████▍| 47/50 [44:13<02:52, 57.53s/it] 96%|█████████▌| 48/50 [44:53<01:44, 52.14s/it] 98%|█████████▊| 49/50 [45:40<00:50, 50.76s/it]100%|██████████| 50/50 [46:31<00:00, 50.67s/it]
+
+File has 8837120 samples
+After resample: File has 4418560 samples
+File has 13985792 samples
+After resample: File has 6992896 samples
+File has 11158528 samples
+After resample: File has 5579264 samples
+File has 10774528 samples
+After resample: File has 5387264 samples
+File has 11028480 samples
+After resample: File has 5514240 samples
+File has 13782016 samples
+After resample: File has 6891008 samples
+File has 11153408 samples
+After resample: File has 5576704 samples
+File has 15151104 samples
+After resample: File has 7575552 samples
+File has 11067392 samples
+After resample: File has 5533696 samples
+File has 10330112 samples
+After resample: File has 5165056 samples
+File has 12157952 samples
+After resample: File has 6078976 samples
+File has 9750528 samples
+After resample: File has 4875264 samples
+File has 9765888 samples
+After resample: File has 4882944 samples
+File has 10361856 samples
+After resample: File has 5180928 samples
+File has 11797504 samples
+After resample: File has 5898752 samples
+File has 10873856 samples
+After resample: File has 5436928 samples
+File has 8763392 samples
+After resample: File has 4381696 samples
+File has 11900928 samples
+After resample: File has 5950464 samples
+File has 3353600 samples
+After resample: File has 1676800 samples
+File has 7748608 samples
+After resample: File has 3874304 samples
+File has 9668608 samples
+After resample: File has 4834304 samples
+File has 8240128 samples
+After resample: File has 4120064 samples
+File has 14012416 samples
+After resample: File has 7006208 samples
+File has 13475840 samples
+After resample: File has 6737920 samples
+File has 7817216 samples
+After resample: File has 3908608 samples
+File has 9354240 samples
+After resample: File has 4677120 samples
+File has 10022912 samples
+After resample: File has 5011456 samples
+2018-12-03 16:32:58.224930: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2018-12-03 16:32:58.335798: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:964] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2018-12-03 16:32:58.336384: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 0 with properties: 
+name: GeForce GTX 980 Ti major: 5 minor: 2 memoryClockRate(GHz): 1.076
+pciBusID: 0000:02:00.0
+totalMemory: 5.94GiB freeMemory: 5.83GiB
+2018-12-03 16:32:58.336404: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0
+2018-12-03 16:32:58.522170: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-12-03 16:32:58.522223: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 
+2018-12-03 16:32:58.522230: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N 
+2018-12-03 16:32:58.522402: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 5603 MB memory) -> physical GPU (device: 0, name: GeForce GTX 980 Ti, pci bus id: 0000:02:00.0, compute capability: 5.2)
+  0%|          | 0/1000 [00:00<?, ?it/s]
+############################
+shape of features  (?, 98291, 2)
+post conv 1d 	 (?, 98277, 24)
+l1d 		 (?, 49139, 24)
+post conv 1d 	 (?, 49125, 48)
+l1d 		 (?, 24563, 48)
+post conv 1d 	 (?, 24549, 72)
+l1d 		 (?, 12275, 72)
+post conv 1d 	 (?, 12261, 96)
+l1d 		 (?, 6131, 96)
+post conv 1d 	 (?, 6117, 120)
+l1d 		 (?, 3059, 120)
+post conv 1d 	 (?, 3045, 144)
+l1d 		 (?, 1523, 144)
+post conv 1d 	 (?, 1509, 168)
+l1d 		 (?, 755, 168)
+post conv 1d 	 (?, 741, 192)
+l1d 		 (?, 371, 192)
+post conv 1d 	 (?, 357, 216)
+l1d 		 (?, 179, 216)
+post conv 1d 	 (?, 165, 240)
+l1d 		 (?, 83, 240)
+post conv 1d 	 (?, 69, 264)
+l1d 		 (?, 35, 264)
+post conv 1d 	 (?, 21, 288)
+l1d 		 (?, 11, 288)
+concatenated	 (?, 17, 576)
+concatenated	 (?, 29, 528)
+concatenated	 (?, 53, 480)
+concatenated	 (?, 101, 432)
+concatenated	 (?, 197, 384)
+concatenated	 (?, 389, 336)
+concatenated	 (?, 773, 288)
+concatenated	 (?, 1541, 240)
+concatenated	 (?, 3077, 192)
+concatenated	 (?, 6149, 144)
+concatenated	 (?, 12293, 96)
+concatenated	 (?, 24581, 48)
+final layer 	 (?, 24581, 2)
+############################
+Num_params:  8656082
+EPOCH 0
+Traceback (most recent call last):
+  File "record_reader.py", line 200, in <module>
+    feed_dict={handle: train_handle})  # , {features:mix,labels:vocals}
+  File "/home/ostap/Documents/cgml2018-final/venv/lib/python3.5/site-packages/tensorflow/python/client/session.py", line 929, in run
+    run_metadata_ptr)
+  File "/home/ostap/Documents/cgml2018-final/venv/lib/python3.5/site-packages/tensorflow/python/client/session.py", line 1152, in _run
+    feed_dict_tensor, options, run_metadata)
+  File "/home/ostap/Documents/cgml2018-final/venv/lib/python3.5/site-packages/tensorflow/python/client/session.py", line 1328, in _do_run
+    run_metadata)
+  File "/home/ostap/Documents/cgml2018-final/venv/lib/python3.5/site-packages/tensorflow/python/client/session.py", line 1334, in _do_call
+    return fn(*args)
+  File "/home/ostap/Documents/cgml2018-final/venv/lib/python3.5/site-packages/tensorflow/python/client/session.py", line 1319, in _run_fn
+    options, feed_dict, fetch_list, target_list, run_metadata)
+  File "/home/ostap/Documents/cgml2018-final/venv/lib/python3.5/site-packages/tensorflow/python/client/session.py", line 1407, in _call_tf_sessionrun
+    run_metadata)
+KeyboardInterrupt
+0it [00:00, ?it/s]
+0it [00:00, ?it/s]
+Processing train data...
+Processing test data...
+  0%|          | 0/100 [00:00<?, ?it/s]  1%|          | 1/100 [00:47<1:18:11, 47.39s/it]  2%|▏         | 2/100 [00:52<56:27, 34.57s/it]    3%|▎         | 3/100 [01:43<1:03:54, 39.53s/it]  4%|▍         | 4/100 [03:12<1:27:02, 54.41s/it]  5%|▌         | 5/100 [03:57<1:21:53, 51.72s/it]
