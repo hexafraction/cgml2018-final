@@ -1,0 +1,67 @@
+2018-12-03 22:16:54.226296: I tensorflow/core/platform/cpu_feature_guard.cc:141] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2018-12-03 22:16:54.327092: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:964] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2018-12-03 22:16:54.327687: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1432] Found device 0 with properties: 
+name: GeForce GTX 980 major: 5 minor: 2 memoryClockRate(GHz): 1.2785
+pciBusID: 0000:01:00.0
+totalMemory: 3.94GiB freeMemory: 3.19GiB
+2018-12-03 22:16:54.327707: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1511] Adding visible gpu devices: 0
+2018-12-03 22:16:54.517051: I tensorflow/core/common_runtime/gpu/gpu_device.cc:982] Device interconnect StreamExecutor with strength 1 edge matrix:
+2018-12-03 22:16:54.517103: I tensorflow/core/common_runtime/gpu/gpu_device.cc:988]      0 
+2018-12-03 22:16:54.517109: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1001] 0:   N 
+2018-12-03 22:16:54.517254: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1115] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 2904 MB memory) -> physical GPU (device: 0, name: GeForce GTX 980, pci bus id: 0000:01:00.0, compute capability: 5.2)
+############################
+shape of features  (?, 65523, 2)
+post conv 1d 	 (?, 65509, 24)
+l1d 		 (?, 32755, 24)
+post conv 1d 	 (?, 32741, 48)
+l1d 		 (?, 16371, 48)
+post conv 1d 	 (?, 16357, 72)
+l1d 		 (?, 8179, 72)
+post conv 1d 	 (?, 8165, 96)
+l1d 		 (?, 4083, 96)
+post conv 1d 	 (?, 4069, 120)
+l1d 		 (?, 2035, 120)
+post conv 1d 	 (?, 2021, 144)
+l1d 		 (?, 1011, 144)
+post conv 1d 	 (?, 997, 168)
+l1d 		 (?, 499, 168)
+post conv 1d 	 (?, 485, 192)
+l1d 		 (?, 243, 192)
+post conv 1d 	 (?, 229, 216)
+l1d 		 (?, 115, 216)
+post conv 1d 	 (?, 101, 240)
+l1d 		 (?, 51, 240)
+post conv 1d 	 (?, 37, 264)
+l1d 		 (?, 19, 264)
+concatenated	 (?, 33, 480)
+concatenated	 (?, 61, 432)
+concatenated	 (?, 117, 384)
+concatenated	 (?, 229, 336)
+concatenated	 (?, 453, 288)
+concatenated	 (?, 901, 240)
+concatenated	 (?, 1797, 192)
+concatenated	 (?, 3589, 144)
+concatenated	 (?, 7173, 96)
+concatenated	 (?, 14341, 48)
+final layer 	 (?, 14341, 2)
+############################
+Num_params:  6022922
+EPOCH 0
+Loss: 0.001701036
+Loss: 0.0023891672
+Traceback (most recent call last):
+  File "model22khz.py", line 204, in <module>
+    feed_dict={handle: train_handle})  # , {features:mix,labels:vocals}
+  File "/home/ostap/Documents/cgml2018-final/venv/lib/python3.5/site-packages/tensorflow/python/client/session.py", line 929, in run
+    run_metadata_ptr)
+  File "/home/ostap/Documents/cgml2018-final/venv/lib/python3.5/site-packages/tensorflow/python/client/session.py", line 1152, in _run
+    feed_dict_tensor, options, run_metadata)
+  File "/home/ostap/Documents/cgml2018-final/venv/lib/python3.5/site-packages/tensorflow/python/client/session.py", line 1328, in _do_run
+    run_metadata)
+  File "/home/ostap/Documents/cgml2018-final/venv/lib/python3.5/site-packages/tensorflow/python/client/session.py", line 1334, in _do_call
+    return fn(*args)
+  File "/home/ostap/Documents/cgml2018-final/venv/lib/python3.5/site-packages/tensorflow/python/client/session.py", line 1319, in _run_fn
+    options, feed_dict, fetch_list, target_list, run_metadata)
+  File "/home/ostap/Documents/cgml2018-final/venv/lib/python3.5/site-packages/tensorflow/python/client/session.py", line 1407, in _call_tf_sessionrun
+    run_metadata)
+KeyboardInterrupt

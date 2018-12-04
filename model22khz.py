@@ -17,11 +17,11 @@ from tensorflow.contrib.signal import stft, hamming_window
 from tqdm import tqdm
 
 # Given to us in Wave-U-Net
-BATCH_SIZE = 10
+BATCH_SIZE = 8
 NUM_ITER = 1000  # 1020 #change to more when we get a more robust record parser
-EPOCHS = 500  # should be like 2000 but really 20 iterations after it stops improoving the loss
+EPOCHS = 2000  # should be like 2000 but really 20 iterations after it stops improoving the loss
 # Tell it what gpu to use
-#os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+os.environ['CUDA_VISIBLE_DEVICES'] = "1"
 
 
 # Accepts tensors of shape [BatchSize, Samples, Channels].
@@ -207,7 +207,7 @@ for epo in range(EPOCHS):
             writer.add_summary(summ, k + epo * NUM_ITER);
         except tf.errors.OutOfRangeError:
             break
-    modelName = os.getcwd() + '/models/' + str(epo) + 'loss:' + str(loss_np) + '.ckpt'
+    modelName = os.getcwd() + '/models/unet22khzMSE/' + str(epo) + 'loss:' + str(loss_np) + '.ckpt'
     savePath = saver.save(sess, modelName)
     print('Model saved at: ', savePath)
     print('Loss:', loss_np)
