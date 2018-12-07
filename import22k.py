@@ -9,15 +9,16 @@ import sys
 import glob
 import numpy as np
 import stempeg
-import tensorflow as tf
+#import tensorflow as tf
 import gc
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
+import wavio
 from tqdm import tqdm
 
 
 if len(sys.argv) < 2:
-    print("USAGE: import22k.py checkpoint_name")
+    print("USAGE: import22k.py checkpoint_name [pos outdir prefix]")
     exit(-1)
 
 # Given to us in Wave-U-Net
@@ -25,7 +26,8 @@ BATCH_SIZE = 10
 NUM_ITER = 1000  # 1020 #change to more when we get a more robust record parser
 EPOCHS = 500  # should be like 2000 but really 20 iterations after it stops improoving the loss
 # Tell it what gpu to use
-os.environ['CUDA_VISIBLE_DEVICES'] = "2"
+os.environ['CUDA_VISIBLE_DEVICES'] = "-1"
+import tensorflow as tf
 
 
 ################ Adding My Stuff Below This ################
@@ -165,6 +167,32 @@ saver = tf.train.Saver();
 sess.__enter__()
 saver.restore(sess, sys.argv[1])
 print("Restored. Call this script with python -i to interact with it.")
+if(len(sys.argv)==5):
+    print("Dumping an example.")
+    mc = mix[:,off:-off,:]
+    [lp,gt,mx]=sess.run([labels_predicted, labels, mc])
+    bigmix = [lp,gt,mx]
+    bigmix[0] = bigmix[0].reshape(286820//2,2)
+    bigmix[1] = bigmix[1].reshape(286820//2,2)
+    bigmix[2] = bigmix[2].reshape(286820//2,2)
+
+    for i in range(int(sys.argv[2])): 
+        print(i)
+        [lp,gt,mx]=sess.run([labels_predicted, labels, mc])
+        #bigmix[0] = np.concatenate((bigmix[0],lp.reshape(286820//2,2)),0)
+        #bigmix[1] = np.concatenate((bigmix[1],gt.reshape(286820//2,2)),0)
+        #bigmix[2] = np.concatenate((bigmix[2],mx.reshape(286820//2,2)),0)
+    for i in range(30): 
+        print(i)
+        [lp,gt,mx]=sess.run([labels_predicted, labels, mc])
+        bigmix[0] = np.concatenate((bigmix[0],lp.reshape(286820//2,2)),0)
+        bigmix[1] = np.concatenate((bigmix[1],gt.reshape(286820//2,2)),0)
+        bigmix[2] = np.concatenate((bigmix[2],mx.reshape(286820//2,2)),0)
+
+    wavio.write(os.path.join(sys.argv[3], sys.argv[4]+"lp.wav"), bigmix[0], 22050, sampwidth=3)
+    wavio.write(os.path.join(sys.argv[3], sys.argv[4]+"gt.wav"), bigmix[1], 22050, sampwidth=3)
+    wavio.write(os.path.join(sys.argv[3], sys.argv[4]+"mx.wav"), bigmix[2], 22050, sampwidth=3)
+
 
 #################### Model is going above this ####################
 ### Andrey's is below, its kept as a comment for peace of mind ####
