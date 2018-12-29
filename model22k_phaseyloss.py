@@ -5,9 +5,6 @@
 # Professor Curro
 
 import os
-
-os.environ['CUDA_VISIBLE_DEVICES'] = "0"
-
 import sys
 import glob
 import numpy as np
@@ -24,6 +21,7 @@ BATCH_SIZE = 8
 NUM_ITER = 1000  # 1020 #change to more when we get a more robust record parser
 EPOCHS = 2000  # should be like 2000 but really 20 iterations after it stops improoving the loss
 # Tell it what gpu to use
+os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
 # Accepts tensors of shape [BatchSize, Samples, Channels].
 #  To spectral-loss multiple predictions (e.g. drums and vocals), call this separately on each track.
@@ -64,8 +62,8 @@ def WaveUNet(features):
     def UpSample(dataIn):
         dataIn = tf.expand_dims(dataIn, axis=1)
         upsampled = tf.image.resize_bilinear(dataIn, [1, dataIn.get_shape().as_list()[2] * 2])
-        return upsampled
-
+        return upsample
+d
     # PARAMETERS OF THE MODEL
     convFilters = 24  # num extra filters per layer
     convStride = 1
@@ -81,7 +79,7 @@ def WaveUNet(features):
     for i in range(LAYERS):
         # perform 1d Conv using the parameters defined above
         l1 = tf.layers.conv1d(l1, convFilters * (i + 1), down_kernel_size, padding=convPadding,
-                              activation=tf.nn.leaky_relu)
+                            activation=tf.nn.leaky_relu)
         print("post conv 1d \t", l1.shape)  # print the shape for sanity sake
         down.append(l1)  # append the convolved layer to the skip connection list
 
